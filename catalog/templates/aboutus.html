@@ -1,20 +1,9 @@
-
+{% extends 'base_generic.html' %}
 
 {% block title %}
     <title>The Library</title>
     
 {% endblock %}
 {% block content %}
-  <h1>LocalLibrary Home</h1>
-  <p>Welcome to LocalLibrary, a website developed by <em>Antonio Ruiz Ruiz</em>!</p>
-
-  <h2 href="{% url 'aboutus' %}">About us</h2>
-  <h2>Dynamic content</h2>
-  <p>The library has the following record counts:</p>
-  <ul>
-    <li><strong>Books:</strong> {{ num_books }}</li>
-    <li><strong>Total of copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Authors:</strong> {{ num_authors }}</li>
-  </ul>
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12302.403118032209!2d2.6600937!3d39.5686084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x129793b294b0bde7%3A0xde95e841daaa83a!2sBiblioteca%20Joan%20Alcover!5e0!3m2!1sca!2ses!4v1684341500534!5m2!1sca!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 {% endblock %}
