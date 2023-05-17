@@ -8,8 +8,10 @@ from django.views import View, generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-
-from catalog.forms import RenewBookForm
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from catalog.forms import RenewBookModelForm
+from catalog.models import CartItem
 
 #from forms import RenewBookForm
 
@@ -116,7 +118,7 @@ def renew_book_librarian(request, pk):
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookForm(request.POST)
+        form = RenewBookModelForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
@@ -130,7 +132,7 @@ def renew_book_librarian(request, pk):
     # If this is a GET (or any other method) create the default form.
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+        form = RenewBookModelForm(initial={'renewal_date': proposed_renewal_date})
 
     context = {
         'form': form,
@@ -140,4 +142,43 @@ def renew_book_librarian(request, pk):
     return render(request, 'book_renew_librarian.html', context)
 
 
+class AuthorCreate(CreateView):
+    model = Author
+    fields = ['first_name','last_name','date_of_birth','date_of_death']
+    initial = {'date_of_death':'11/06/2020'}
+    
+class AuthorUpdate(UpdateView):
+    model = Author
+    fields= '__all__'
+    
+class AuthorDelete(DeleteView):
+    model = Author
+    success_url = reverse_lazy('author_list')
+    
+class BookCreate(CreateView):
+    model = Book
+    fields = ['title','author','summary','isbn','genre','language']
+    initial = {'Language':'English'}
+    
+class BookUpdate(UpdateView):
+    model = Book
+    fields= '__all__'
+    
+class BookDelete(DeleteView):
+    model = Book
+    success_url = reverse_lazy('book_list')
 
+class AddToCartView(View):
+    def post(self, request, pk):
+        book = get_object_or_404(Book, id=pk)
+        cart_item, created = CartItem.objects.get_or_create(book=book)
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+        return render(request, 'success.html', {'book': book})
+
+class CartView(View):
+    def get(self, request):
+        cart_items = CartItem.objects.all()
+        total_price = sum(item.get_total_price() for item in cart_items)
+        return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})

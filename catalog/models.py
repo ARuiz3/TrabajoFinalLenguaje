@@ -112,3 +112,13 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object"""
         return f'{self.last_name}, {self.first_name}'
+    
+class CartItem(models.Model):
+    """Model representing an item in the shopping cart."""
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, default=1)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def get_total_price(self):
+        """Calculate and return the total price for this item."""
+        book_price = 10.00
+        return book_price * self.quantity

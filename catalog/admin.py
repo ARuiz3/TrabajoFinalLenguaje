@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Author, Genre, Book, BookInstance, Language
+from .models import Author, Genre, Book, BookInstance, Language, CartItem
 
 # admin.site.register(Book)
 # admin.site.register(Author)
@@ -9,7 +9,6 @@ admin.site.register(Genre)
 admin.site.register(Language)
 
 #define the admin class
-
 
 #register the admin classes for book using the decorator
 
@@ -48,3 +47,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 #register the admin class with the associated model
 admin.site.register(Author, AuthorAdmin)
+
+@admin.register(CartItem)
+class CartAdmin(admin.ModelAdmin):
+    list_display=('book','quantity')
