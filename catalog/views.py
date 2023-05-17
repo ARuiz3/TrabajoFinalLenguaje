@@ -1,4 +1,5 @@
 import datetime
+from datetime import datetime,timedelta
 from typing import Iterable
 from django import forms
 from django.http import HttpResponseRedirect
@@ -169,13 +170,27 @@ class BookDelete(DeleteView):
     success_url = reverse_lazy('book_list')
 
 class AddToCartView(View):
-    def post(self, request, pk):
-        book = get_object_or_404(Book, id=pk)
+    def post(self, request, *args, **kwargs):
+        book_id = request.POST.get('book_id')
+        book = get_object_or_404(Book, id=book_id)
+
+        # Obtén una instancia disponible del libro
+        book_instance = get_object_or_404(BookInstance, book=book, status='a')
+
+        # Cambia el estado a 'On loan'
+        book_instance.status = 'o'
+        book_instance.due_back = datetime.now() + timedelta(weeks=3)
+        book_instance.save()
+
+        # Agrega el libro al carrito
         cart_item, created = CartItem.objects.get_or_create(book=book)
+
         if not created:
             cart_item.quantity += 1
             cart_item.save()
-        return render(request, 'success.html', {'book': book})
+
+        return render(request, 'success.html', {'book_instance': book_instance})
+
 
 class CartView(View):
     def get(self, request):
