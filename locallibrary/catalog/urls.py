@@ -20,6 +20,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+<<<<<<< HEAD
 >>>>>>> 5d243dd (PrimerPush)
     
+=======
+    path('', views.index, name='index'),
+>>>>>>> 48ddd71 (commit del index html)
 ]
