@@ -1,4 +1,4 @@
-import datetime
+
 from datetime import datetime,timedelta
 from typing import Iterable
 from django import forms
@@ -115,6 +115,7 @@ class LoanedBooksListView(PermissionRequiredMixin,generic.ListView):
 def renew_book_librarian(request, pk):
     """View function for renewing a specific BookInstance by librarian."""
     book_instance = get_object_or_404(BookInstance, pk=pk)
+    import datetime
     # If this is a POST request then process the Form data
     if request.method == 'POST':
 
@@ -197,3 +198,17 @@ class CartView(View):
         cart_items = CartItem.objects.all()
         total_price = sum(item.get_total_price() for item in cart_items)
         return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    
+    
+def index(request):
+    # Resto del código de la vista...
+
+    # Obtener los últimos 5 libros añadidos
+    last_books = Book.objects.order_by('-id')[:5]
+
+    context = {
+        # Resto de las variables del contexto...
+        'last_books': last_books,
+    }
+
+    return render(request, 'index.html', context)

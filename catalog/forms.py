@@ -14,11 +14,11 @@ class RenewBookModelForm(ModelForm):
         data = self.cleaned_data['renewal_date']
 
         # Check if a date is not in the past.
-        if data < datetime.date.today():
+        if data < datetime.now():
             raise ValidationError(_('Invalid date - renewal in past'))
 
         # Check if a date is in the allowed range (+4 weeks from today).
-        if data > datetime.date.today() + datetime.timedelta(weeks=4):
+        if data > datetime.now() + datetime.timedelta(weeks=4):
             raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
 
         # Remember to always return the cleaned data.

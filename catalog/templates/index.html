@@ -5,18 +5,23 @@
     {{block.super}}
 {% endblock %}
 {% block content %}
-  <h1>LocalLibrary Home</h1>
+  <h1 style="font-size: 24px;font-weight: bold;margin-bottom: 20px;">LocalLibrary Home</h1>
   <p>Welcome to LocalLibrary, a website developed by <em>Antonio Ruiz Ruiz</em>!</p>
-
-  <h2><a href="{% url 'aboutus' %}">About us</a></h2>
-  <h2>dynamic content</h2>
+  <h2 style="font-size: 18px;margin-top: 30px;">Last 5 Books Added</h2>
+  <ul style="list-style-type: none;padding: 0;">
+      {% for book in last_books %}
+          <li style="margin-bottom: 10px;"><a style="text-decoration: none;color: #3699fc;" href="{{ book.get_absolute_url }}">{{ book.title }}</a> by {{ book.author }}</li>
+      {% endfor %}
+  </ul>
+  <h2 style="font-size: 18px;margin-top: 30px;"><a href="{% url 'aboutus' %}">About us</a></h2>
+  <h2 style="font-size: 18px;margin-top: 30px;">dynamic content</h2>
   <p>The library has the following record counts:</p>
-  <ul>
-    <li><strong>Books:</strong> {{ num_books }}</li>
-    <li><strong>Total of copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Authors:</strong> {{ num_authors }}</li>
+  <ul style="list-style-type: none;padding: 0;">
+    <li style=" margin-bottom: 10px"><strong>Books:</strong> {{ num_books }}</li>
+    <li style=" margin-bottom: 10px"><strong>Total of copies:</strong> {{ num_instances }}</li>
+    <li style=" margin-bottom: 10px"><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li style=" margin-bottom: 10px"><strong>Authors:</strong> {{ num_authors }}</li>
   </ul>
 
-  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+  <p style="font-style: italic;margin-top: 30px;">You have visited this page {{ num_visits }} time {{ num_visits|pluralize }}.</p>
 {% endblock %}
