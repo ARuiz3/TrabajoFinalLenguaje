@@ -1,9 +1,6 @@
 from django.db import models
-<<<<<<< HEAD
 from django.contrib.auth.models import User
 from datetime import date
-=======
->>>>>>> 5d243dd (PrimerPush)
 
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -49,11 +46,7 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         """Returns the URl to acces a detail record for this book."""
-<<<<<<< HEAD
         return reverse('book-detail', args=[str(self.id)])   # type: ignore
-=======
-        return reverse('book-detail', args=[str(self.id)])  
->>>>>>> 5d243dd (PrimerPush)
     
     def display_genre(self):
         """Create a string for the Genre. This is required for display genre in Admin."""
@@ -71,10 +64,7 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True) 
-<<<<<<< HEAD
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-=======
->>>>>>> 5d243dd (PrimerPush)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -93,7 +83,6 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_back']
-<<<<<<< HEAD
         permissions = (("can_mark_returned", "Set book as returned"),)
 
     @property
@@ -105,12 +94,6 @@ class BookInstance(models.Model):
         """String for representing the Model object"""
         return f'{self.id} ({self.book.title})' # type: ignore
     
-=======
-
-    def __str__(self):
-        """String for representing the Model object"""
-        return f'{self.id} ({self.book.title})'
->>>>>>> 5d243dd (PrimerPush)
     
 class Author(models.Model):
     """Model representing an author."""
@@ -124,11 +107,7 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         """Returns the URL to acces a particular author instance."""
-<<<<<<< HEAD
         return reverse('author-detail', args=[str(self.id)]) # type: ignore
-=======
-        return reverse('author-detail', args=[str(self.id)])
->>>>>>> 5d243dd (PrimerPush)
     
     def __str__(self):
         """String for representing the Model object"""
