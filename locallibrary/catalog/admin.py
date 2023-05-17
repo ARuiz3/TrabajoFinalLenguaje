@@ -10,6 +10,7 @@ admin.site.register(Language)
 
 #define the admin class
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 class AuthorAdmin(admin.ModelAdmin):
@@ -20,6 +21,9 @@ class AuthorAdmin(admin.ModelAdmin):
 #register the admin class with the associated model
 admin.site.register(Author, AuthorAdmin)
 >>>>>>> 5d243dd (PrimerPush)
+=======
+
+>>>>>>> 35675b5 (main)
 
 #register the admin classes for book using the decorator
 
@@ -55,6 +59,9 @@ class BookAdmin(admin.ModelAdmin):
     
     inlines = [BookInstanceInline]
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 35675b5 (main)
 
 class BookInline(admin.TabularInline):
     model = Book
@@ -66,6 +73,10 @@ class AuthorAdmin(admin.ModelAdmin):
     inlines = [BookInline]
 
 #register the admin class with the associated model
+<<<<<<< HEAD
 admin.site.register(Author, AuthorAdmin)
 =======
 >>>>>>> 5d243dd (PrimerPush)
+=======
+admin.site.register(Author, AuthorAdmin)
+>>>>>>> 35675b5 (main)
