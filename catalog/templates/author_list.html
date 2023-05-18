@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Author List</h1>
     {% if perms.catalog.can_mark_returned %}
-    <a class="create-author-link" href="{% url 'author-create' %}">Create Book</a>
+    <a class="create-author-link" href="{% url 'author-create' %}">Create Author</a>
     {% endif %}
     {% if author_list %}
     <ul class="author-list">
@@ -12,7 +12,7 @@
             <li class="author-item">
                 <a class="author-name" href="{{ author.get_absolute_url }}">{{ author.last_name }}, {{ author.first_name }}</a> ({{ author.date_of_birth }} - {{ author.date_of_death }})
                 {% if perms.catalog.can_mark_returned %}
-                <a class="author-action" href="{% url 'author-update' author.id %}">Update author</a>-
+                -<a class="author-action" href="{% url 'author-update' author.id %}">Update author</a>-
                 <a class="author-action" href="{% url 'author-delete' author.id %}">Delete author</a>
                 {% endif %}
             </li>

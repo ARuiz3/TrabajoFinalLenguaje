@@ -2,6 +2,9 @@
 
 {% block content %}
   <h1>Book List</h1>
+  {% if perms.catalog.can_mark_returned %}
+    <a class="create-book-link" href="{% url 'book-create' %}">Create book</a>
+  {% endif %}
 
   <form method="GET">
     <label for="author">Filter by Author:</label>
@@ -19,6 +22,10 @@
       {% for book in object_list %}
         <li class="book-item">
           <a href="{{ book.get_absolute_url }}" class="book-title">{{ book.title }}</a> - {{ book.author }}
+          {% if perms.catalog.can_mark_returned %}
+          -<a class="book-action" href="{% url 'book-update' book.id %}">Update book</a>-
+          <a class="book-action" href="{% url 'book-delete' book.id %}">Delete book</a>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
@@ -29,6 +36,15 @@
 
 {% block styles %}
 <style>
+    .create-book-link {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        background-color: #3699fc;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
   .filter-button {
     display: inline-block;
     margin-top: 10px;
@@ -44,6 +60,11 @@
     list-style: none;
     padding: 0;
   }
+  .book-action {
+        margin-left: 5px;
+        text-decoration: none;
+        color: #999;
+    }
 
   .book-item {
     margin-bottom: 10px;
