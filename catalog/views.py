@@ -197,6 +197,8 @@ class AddToCartView(View):
         book_instance.borrower = request.user
         book_instance.save()
 
+        CartItem.objects.all().delete()
+
         # Agrega el libro al carrito
         cart_item, created = CartItem.objects.get_or_create(book=book)
 
