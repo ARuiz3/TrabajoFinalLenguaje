@@ -115,7 +115,7 @@ class Author(models.Model):
     
 class CartItem(models.Model):
     """Model representing an item in the shopping cart."""
-    book = models.ForeignKey('Book', on_delete=models.CASCADE, default=1)
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, default=1) # type: ignore
     quantity = models.PositiveIntegerField(default=1)
 
     def get_total_price(self):

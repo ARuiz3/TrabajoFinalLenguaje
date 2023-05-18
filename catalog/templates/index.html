@@ -13,7 +13,8 @@
           <li style="margin-bottom: 10px;"><a style="text-decoration: none;color: #3699fc;" href="{{ book.get_absolute_url }}">{{ book.title }}</a> by {{ book.author }}</li>
       {% endfor %}
   </ul>
-  <h2 style="font-size: 18px;margin-top: 30px;"><a href="{% url 'aboutus' %}">About us</a></h2>
+  <h2 style="font-size: 18px;margin-top: 30px;">About us</h2>
+  <p>The Joan Alcover Library is one of the youngest in the network. <a style="text-decoration: none;color: #3699fc;" href="{% url 'aboutus' %}">Read more.</a></p>
   <h2 style="font-size: 18px;margin-top: 30px;">dynamic content</h2>
   <p>The library has the following record counts:</p>
   <ul style="list-style-type: none;padding: 0;">

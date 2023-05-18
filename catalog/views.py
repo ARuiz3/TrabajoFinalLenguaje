@@ -26,6 +26,7 @@ def index(request):
     #Generate counts of some of the main books
     num_books = Book.objects.all().count()
     num_instances = BookInstance.objects.all().count()
+    last_books = Book.objects.order_by('-id')[:5]
 
     #Avaiable books (status = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
@@ -38,6 +39,7 @@ def index(request):
     num_visits = request.session.get('num_visits',0)
     request.session['num_visits'] = num_visits + 1
     context = {
+        'last_books': last_books,
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
@@ -59,6 +61,17 @@ class BookListView(generic.ListView):
     context_object_name = 'book_list'
     template_name='book_list.html'
     paginate_by = 10
+    def get_queryset(self):
+        author_id = self.request.GET.get('author')
+        queryset = super().get_queryset()
+        if author_id:
+            queryset = queryset.filter(author_id=author_id)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['author_list'] = Author.objects.all()
+        return context
 
 class BookDetailView(generic.DetailView):
     model = Book
@@ -125,7 +138,7 @@ def renew_book_librarian(request, pk):
         # Check if the form is valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            book_instance.due_back = form.cleaned_data['renewal_date']
+            book_instance.due_back = form.cleaned_data['due_back']
             book_instance.save()
 
             # redirect to a new URL:
@@ -134,7 +147,7 @@ def renew_book_librarian(request, pk):
     # If this is a GET (or any other method) create the default form.
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookModelForm(initial={'renewal_date': proposed_renewal_date})
+        form = RenewBookModelForm(initial={'due_back': proposed_renewal_date})
 
     context = {
         'form': form,
@@ -181,6 +194,7 @@ class AddToCartView(View):
         # Cambia el estado a 'On loan'
         book_instance.status = 'o'
         book_instance.due_back = datetime.now() + timedelta(weeks=3)
+        book_instance.borrower = request.user
         book_instance.save()
 
         # Agrega el libro al carrito
@@ -200,15 +214,3 @@ class CartView(View):
         return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
     
     
-def index(request):
-    # Resto del código de la vista...
-
-    # Obtener los últimos 5 libros añadidos
-    last_books = Book.objects.order_by('-id')[:5]
-
-    context = {
-        # Resto de las variables del contexto...
-        'last_books': last_books,
-    }
-
-    return render(request, 'index.html', context)

@@ -1,6 +1,72 @@
 {% extends "base_generic.html" %}
 
+{% block styles %}
+<style>
+  .book-details {
+    margin-top: 20px;
+  }
+
+  .book-details h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .book-details p {
+    margin-bottom: 10px;
+  }
+
+  .book-details strong {
+    font-weight: bold;
+  }
+
+  .book-details a {
+    text-decoration: none;
+    color: #3699fc;
+  }
+
+  .book-details hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+  }
+
+  .book-details .text-success {
+    color: green;
+  }
+
+  .book-details .text-danger {
+    color: red;
+  }
+
+  .book-details .text-warning {
+    color: orange;
+  }
+
+  .book-details .text-muted {
+    color: #777;
+  }
+
+  .book-details form {
+    margin-top: 10px;
+  }
+
+  .book-details .btn {
+    background-color: #3699fc;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .book-details .btn:hover {
+    background-color: #1679c6;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+<div class="book-details">
   <h1>Title: {{ book.title }}</h1>
 
   <p><strong>Author:</strong> <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a></p>
@@ -9,27 +75,28 @@
   <p><strong>Language:</strong> {{ book.language }}</p>
   <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>
 
-  <div style="margin-left:20px;margin-top:20px;">
+  <div style="margin-left: 20px; margin-top: 20px;">
     <h4>Copies</h4>
 
     {% for copy in book.bookinstance_set.all %}
-      <hr>
-      <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
-        {{ copy.get_status_display }}
-      </p>
-      {% if copy.status != 'a' %}
-        <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
-      {% endif %}
-      <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
-      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+    <hr>
+    <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+      {{ copy.get_status_display }}
+    </p>
+    {% if copy.status != 'a' %}
+    <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
+    {% endif %}
+    <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
+    <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
 
-      {% if copy.status == 'a' %}
-        <form action="{% url 'add_to_cart' book.id %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="book_id" value="{{ copy.book.id }}">
-          <button type="submit" class="btn btn-primary">Add to Cart</button>
-        </form>
-      {% endif %}
+    {% if copy.status == 'a' %}
+    <form action="{% url 'add_to_cart' book.id %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="book_id" value="{{ copy.book.id }}">
+      <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
+    {% endif %}
     {% endfor %}
   </div>
+</div>
 {% endblock %}

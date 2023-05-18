@@ -2,15 +2,54 @@
 
 {% block content %}
     <h1>Author List</h1>
+    {% if perms.catalog.can_mark_returned %}
+    <a class="create-author-link" href="{% url 'author-create' %}">Create Book</a>
+    {% endif %}
     {% if author_list %}
-    <ul>
+    <ul class="author-list">
+        
         {% for author in author_list %}
-            <li>
-                <a href="{{ author.get_absolute_url }}">{{ author.last_name }},{{ author.first_name}}</a> ({{author.date_of_birth}}-{{author.date_of_death}}) 
+            <li class="author-item">
+                <a class="author-name" href="{{ author.get_absolute_url }}">{{ author.last_name }}, {{ author.first_name }}</a> ({{ author.date_of_birth }} - {{ author.date_of_death }})
+                {% if perms.catalog.can_mark_returned %}
+                <a class="author-action" href="{% url 'author-update' author.id %}">Update author</a>-
+                <a class="author-action" href="{% url 'author-delete' author.id %}">Delete author</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
     {% else %}
-        <p>There are no books in the library.</p>
+        <p>There are no authors in the library.</p>
     {% endif %}
+{% endblock %}
+{% block styles %}
+<style>
+    .create-author-link {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        background-color: #3699fc;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .author-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .author-item {
+        margin-bottom: 20px;
+    }
+    .author-action {
+        margin-left: 5px;
+        text-decoration: none;
+        color: #999;
+    }
+
+    .author-name {
+        text-decoration: none;
+        color: #3699fc;
+    }
+</style>
 {% endblock %}

@@ -1,12 +1,54 @@
 {% extends "base_generic.html" %}
+{% block styles%}
+<style>
+        .delete-author-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+        }
 
+        .delete-author-title {
+            font-size: 24px;
+            color: #3699fc;
+            margin-bottom: 10px;
+        }
+
+        .delete-author-message {
+            margin-bottom: 20px;
+        }
+
+        .delete-author-form {
+            text-align: center;
+        }
+
+        .delete-author-button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .delete-author-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+{% endblock %}
 {% block content %}
-<h1>Delete Author</h1>
+    
 
-<p>Are you sure you want to delete the author: {{ author }}?</p>
+    <div class="delete-author-container">
+        <h1 class="delete-author-title">Delete Author</h1>
 
-<form action="" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Yes, delete.">
-</form>
+        <p class="delete-author-message">Are you sure you want to delete the author: {{ author }}?</p>
+
+        <form class="delete-author-form" action="" method="post">
+            {% csrf_token %}
+            <input class="delete-author-button" type="submit" value="Yes, delete.">
+        </form>
+    </div>
 {% endblock %}

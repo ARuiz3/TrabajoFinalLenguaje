@@ -1,23 +1,57 @@
-{% extends "base_generic.html" %}
+{% extends 'base_generic.html' %}
 
 {% block content %}
-    <h1>Book List</h1>
-    {% if perms.catalog.can_mark_returned %}
-    <a href="{% url 'book-create' %}">Create Book</a>
-    {% endif %}
-    {% if book_list %}
-    <ul>
-        {% for book in book_list %}
-            <li>
-                <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})-  
-                {% if perms.catalog.can_mark_returned %}
-                <a href="{% url 'book-update' book.id %}"> Update Book</a>-
-                <a href="{% url 'book-delete' book.id %}"> Delete Book</a>
-                {% endif %}
-            </li>
-        {% endfor %}
+  <h1>Book List</h1>
+
+  <form method="GET">
+    <label for="author">Filter by Author:</label>
+    <select name="author" id="author">
+      <option value="">All Authors</option>
+      {% for author in author_list %}
+        <option value="{{ author.id }}">{{ author }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Filter" class="filter-button">
+  </form>
+
+  {% if object_list %}
+    <ul class="book-list">
+      {% for book in object_list %}
+        <li class="book-item">
+          <a href="{{ book.get_absolute_url }}" class="book-title">{{ book.title }}</a> - {{ book.author }}
+        </li>
+      {% endfor %}
     </ul>
-    {% else %}
-        <p>There are no books in the library.</p>
-    {% endif %}
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+{% endblock %}
+
+{% block styles %}
+<style>
+  .filter-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #3699fc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .book-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .book-item {
+    margin-bottom: 10px;
+  }
+
+  .book-title {
+    text-decoration: none;
+    color: #3699fc;
+  }
+</style>
 {% endblock %}

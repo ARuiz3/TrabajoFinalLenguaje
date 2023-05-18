@@ -8,17 +8,17 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 class RenewBookModelForm(ModelForm):
-    renewal_date = forms.DateField(help_text="Enter a date between now and 4 weeks (default 3).")
+    due_back = forms.DateField(help_text="Enter a date between now and 4 weeks (default 3).")
 
-    def clean_renewal_date(self):
-        data = self.cleaned_data['renewal_date']
+    def clean_due_back(self):
+        data = self.cleaned_data['due_back']
 
         # Check if a date is not in the past.
-        if data < datetime.now():
+        if data < datetime.date.today():
             raise ValidationError(_('Invalid date - renewal in past'))
 
         # Check if a date is in the allowed range (+4 weeks from today).
-        if data > datetime.now() + datetime.timedelta(weeks=4):
+        if data > datetime.date.today() + datetime.timedelta(weeks=4):
             raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
 
         # Remember to always return the cleaned data.
@@ -27,25 +27,5 @@ class RenewBookModelForm(ModelForm):
     class Meta:
         model = BookInstance
         fields = ['due_back']
-        labels = {'due_back':_('Renewal date')}
+        labels = {'due_back':_('Due back')}
         help_texts = {'due_back':_('Enter a date between now and 4 weeks (default 3).')}
-
-
-
-class CartAddBookForm(forms.Form):
-    """Form to add a book to the cart."""
-
-    # The quantity field is always 1 for this form, as only one book can be added to the cart at a time
-    quantity = forms.TypedChoiceField(choices=((1, 1),), coerce=int, widget=forms.HiddenInput)
-    
-    def __init__(self, *args, **kwargs):
-        self.book = kwargs.pop('book', None)
-        super().__init__(*args, **kwargs)
-
-    def clean_quantity(self):
-        """Return the only allowed value for quantity: 1."""
-        return 1
-
-    def get_book(self):
-        """Return the book associated with this form."""
-        return self.book

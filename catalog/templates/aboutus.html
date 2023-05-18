@@ -2,11 +2,44 @@
 
 {% block title %}
     <title>The Library</title>
-    
+{% endblock %}
+{% block styles %}
+<style>
+        .library-title {
+            width: 400px;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #3699fc;
+        }
+
+        .library-description {
+            max-width: 900px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+            background-color: #f2f2f2;
+            padding: 10px;
+            color: #333333;
+            text-align: justify;
+        }
+
+        .library-map {
+            margin: 0 auto;
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            height: 450px;
+            border: 0;
+        }
+    </style>
 {% endblock %}
 {% block content %}
-<h1 style="width:400px;"> Joan Alcover Library</h1>
+    
 
-<p style="max-width: 900px;">The Joan Alcover Library is one of the youngest in the network. It was inaugurated on June 1, 2010 and is located on the second floor of Casal de Barrio, at the corner of Jeroni Pou and Joan Alcover streets, in the Foners neighborhood. It is specialized in hiking and nature. It is a municipal center at the service of culture, information and entertainment. It is almost 200 m2 and has 42 reading points, a computer area with 6 computers with Internet access, a space for reading the press for 8 people, and a children's area, with 12 reading points, suitable for accompanying little ones in their first reading experiences.</p>
-<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12302.403118032209!2d2.6600937!3d39.5686084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x129793b294b0bde7%3A0xde95e841daaa83a!2sBiblioteca%20Joan%20Alcover!5e0!3m2!1sca!2ses!4v1684341500534!5m2!1sca!2ses" width="600" height="450" style="border:0; margin: 3px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <h1 class="library-title">Joan Alcover Library</h1>
+
+    <p class="library-description">The Joan Alcover Library is one of the youngest in the network. It was inaugurated on June 1, 2010 and is located on the second floor of Casal de Barrio, at the corner of Jeroni Pou and Joan Alcover streets, in the Foners neighborhood. It is specialized in hiking and nature. It is a municipal center at the service of culture, information, and entertainment. It is almost 200 m2 and has 42 reading points, a computer area with 6 computers with Internet access, a space for reading the press for 8 people, and a children's area, with 12 reading points, suitable for accompanying little ones in their first reading experiences.</p>
+
+    <iframe class="library-map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12302.403118032209!2d2.6600937!3d39.5686084!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x129793b294b0bde7%3A0xde95e841daaa83a!2sBiblioteca%20Joan%20Alcover!5e0!3m2!1sca!2ses!4v1684341500534!5m2!1sca!2ses" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 {% endblock %}

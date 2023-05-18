@@ -1,35 +1,93 @@
 {% extends 'base_generic.html' %}
 
-{% block content%}
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try aganin</p>
-    {% endif %}
-    
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>Your account doesn't have acces to this page. To proced,
-            please login with an account that has acces.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
+{% block styles %}
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .login-container p {
+            margin-bottom: 20px;
+        }
+
+        .login-container form {
+            margin-bottom: 20px;
+        }
+
+        .login-container table {
+            width: 100%;
+        }
+
+        .login-container table td {
+            padding: 10px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-container input[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3699fc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #2674c8;
+        }
+
+        .login-container a {
+            color: #3699fc;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
-    {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input type="submit" value="login">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please log in with an account that has access.</p>
+            {% else %}
+                <p>Please log in to see this page.</p>
+            {% endif %}
+        {% endif %}
 
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-        
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+            </table>
+            <input type="submit" value="Login">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    </div>
 {% endblock %}

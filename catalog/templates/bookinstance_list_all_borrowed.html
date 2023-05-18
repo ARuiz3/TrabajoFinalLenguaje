@@ -1,19 +1,69 @@
 {% extends "base_generic.html" %}
 
+{% block styles %}
+<style>
+  .borrowed-books {
+    margin-top: 20px;
+  }
+
+  .borrowed-books h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .borrowed-books ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .borrowed-books li {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+  }
+
+  .borrowed-books li.text-danger {
+    color: red;
+    font-weight: bold;
+  }
+
+  .borrowed-books li a {
+    text-decoration: none;
+    color: #3699fc;
+  }
+
+  .borrowed-books li a:hover {
+    text-decoration: underline;
+  }
+
+  .borrowed-books .renew-link {
+    color: #555;
+    margin-left: 10px;
+    font-size: 14px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-    <h1>All Borrowed Books</h1>
+<div class="borrowed-books">
+  <h1>All Borrowed Books</h1>
 
-    {% if bookinstance_list %}
-    <ul>
+  {% if bookinstance_list %}
+  <ul>
+    {% for bookinst in bookinstance_list %}
+    <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+      <a href="{% url 'book-detail' bookinst.book.pk %}">{{ bookinst.book.title }}</a> ({{ bookinst.due_back }})
 
-      {% for bookinst in bookinstance_list %}
-      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-        <a href="{% url 'book-detail' bookinst.book.pk %}">{{ bookinst.book.title }}</a> ({{ bookinst.due_back }}) {% if user.is_staff %}- {{ bookinst.borrower }} {% endif %}{% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a>{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-
-    {% else %}
-      <p>There are no books borrowed.</p>
-    {% endif %}
+      {% if user.is_staff %}- {{ bookinst.borrower }} {% endif %}
+      
+      {% if perms.catalog.can_mark_returned %}
+      - <a href="{% url 'renew-book-librarian' bookinst.id %}" class="renew-link">Renew</a>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>There are no books borrowed.</p>
+  {% endif %}
+</div>
 {% endblock %}

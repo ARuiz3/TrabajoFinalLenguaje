@@ -44,6 +44,7 @@
       flex-grow: 1;
     }
   </style>
+  {% block styles %}{% endblock %}
 </head>
 
 <body>
@@ -55,6 +56,7 @@
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'book_list' %}">All books</a></li>
         <li><a href="{% url 'author_list' %}">All authors</a></li>
+        <li><a href="{% url 'aboutus' %}">About us</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'cart' %}">Cart</a></li>
         {% endif %}
@@ -64,8 +66,8 @@
         {% if user.is_authenticated %}
         <p>User: {{ user.get_username }}</p>
         <ul>
-          <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
-          <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
+          <li><a href="{% url 'my-borrowed' %}">My Profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
           {% if perms.catalog.can_mark_returned %}
           <p>Staff</p>
           <li><a href="{% url 'allborrowed' %}">All borrowed</a></li>
